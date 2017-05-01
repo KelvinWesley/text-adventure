@@ -19,14 +19,13 @@ import java.util.List;
 public class MyAgent implements Agent {
 	
 	private Random random = new Random();
-	
+	ArrayList<String> losVerbos = new ArrayList<>();
+
 	public MyAgent() {
 	}
 	
-	
 	// Create a document. No computation is done yet.
-	private ArrayList<String> verbos(String texto){
-		ArrayList<String> mVerbos = new ArrayList<>();
+	private void verbos(String texto, ArrayList<String> listaVerbos){
 	    Document doc = new Document(texto);
 	    for (Sentence sent : doc.sentences()) { 
 //	    	System.out.println("sent.length() "+sent.length());
@@ -35,7 +34,7 @@ public class MyAgent implements Agent {
 		    	String temp = sent.posTag(i);
 		        if(temp.compareTo("VB") == 0) {
 //		        	System.out.println("O verbo eh " + sent.word(i));
-			        mVerbos.add(sent.word(i));
+			        listaVerbos.add(sent.word(i));
 		        }
 		        else {
 //		        	System.out.println("Não verbo " + sent.word(i));
@@ -43,15 +42,14 @@ public class MyAgent implements Agent {
 	        }
 	    }
     	System.out.println("Os verbos sao:");
-    	System.out.println(mVerbos);
+    	System.out.println(listaVerbos);
 
-		return mVerbos;
 	}
 	
 	@Override
 	public String action(String narrative) {
 		System.out.println(narrative);
-		ArrayList<String> losVerbos = verbos(narrative);
+		verbos(narrative, losVerbos);
 		String command = new String();
 		command = losVerbos.get(0);
 		losVerbos.remove(0);
@@ -76,7 +74,7 @@ public class MyAgent implements Agent {
 
 			 //2. Load the adventure file, e.g. "myPath/someMachineGame.z8"			
 			File zMachineData = new File( args[ 0 ] );
-			System.out.println("leu essa merda"); 
+			System.out.println("leu o arquivo"); 
 
 			 //3. Invoke the adventure framework			
 			ieeecig.advent.Main.invoke( agent, zMachineData );
